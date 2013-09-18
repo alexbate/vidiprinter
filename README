@@ -1,6 +1,6 @@
 README - Vidiprinter
 
-Please note this project, although functional, is a work-in-progress and is currently missing key features such as a settings panel.
+Please note this project, although functional, is a work-in-progress.
 
 Vidiprinter is a Python script designed for the Raspberry Pi which brings in information form multiple sources and displayes them as a ticker on the screen, like those on Final Score/Soccer Saturday.
 
@@ -16,12 +16,12 @@ Other planned sources include:
 -- Public transport databases
 -- Google Calendar
 
+When the program is first launched, you will be prompted for a series of credentials. These can be changed at a later date by running VidiprinterSettings.py
+
 Vidiprinter is dependent on a number of Python modules, all of which can be be installed using 'sudo easy_isntall modulename'. These are listed at the top of the Python script.
 
 TODO list
 -- Add the sources listed above
--- Create a settings panel allowing you to:
-	- Turn sources on or off
-	- Change already entered information
+-- Turn sources on or of
 -- Interface with an LCD screen
 -- Audible alert when something updates
