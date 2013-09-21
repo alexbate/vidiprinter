@@ -22,6 +22,6 @@ Vidiprinter is dependent on a number of Python modules, all of which can be be i
 
 TODO list
 -- Add the sources listed above
--- Turn sources on or of
+-- Turn sources on or off
 -- Interface with an LCD screen
 -- Audible alert when something updates
