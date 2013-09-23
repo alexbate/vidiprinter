@@ -131,7 +131,7 @@ lastFbTitle = facebook()
 lastRSS = LatestRSSHeadline(RSSurl)
 UpdateCalendarEvents(calendarReminders)
 
-output_line(str(calendarReminders[0]))
+#output_line(str(calendarReminders[0]))
 
 output_line('Vidiprinter online as of ' + datetime.datetime.strftime(datetime.datetime.now(), '%H:%M:%S'))
 
