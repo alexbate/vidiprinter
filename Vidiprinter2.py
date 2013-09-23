@@ -1,4 +1,4 @@
-import imaplib, re, time, sys, gdata, datetime, os, httplib2, urllib2, feedparser, shelve
+import imaplib, re, time, sys, gdata, datetime, os, httplib2, urllib2, feedparser, shelve, gdata
 from twitter import *
 from email.parser import HeaderParser
 
@@ -30,6 +30,13 @@ g=imaplib.IMAP4_SSL('imap.gmail.com')
 g.login(gmailLogin, gmailPass)
 g.select("inbox")
 
+def googleCalendarLogin(calendar):
+	calendar.email = gmailLogin
+	calendar.password = gmailPass
+	calendar.ProgrammaticLogin()
+	
+gCal = gdata.calendar.service.CalendarService()
+googleCalendarLogin(gCal)	
 
 def fetch_unread_email(mail):
 	result, data = mail.search(None, '(UNSEEN)')
@@ -46,6 +53,31 @@ def fetch_unread_email(mail):
 		time.sleep(1)
 
 global FBurl
+calendarReminders = []
+
+def UpdateCalendarEvents(calendar, reminderList):
+	#Thanks to http://julien.danjou.info/blog/2012/google-calendar-pynotify
+	eventFeed = calendar.GetCalendarEventFeed()
+	now = datetime.datetime.now()
+	reminderList=[]
+	for event in feed.entry:
+		#Check status of event
+		if event.event_status.calue != 'CONFIRMED':
+			continue
+		#Iterate through event dates (for recurring)
+		for when in event.when:
+			try:
+				start_time = datetime.datetime.strptime(when.start_time.split(".")[0], "%Y-%m-%dT%H:%M:%S")
+				end_time = datetime.datetime.strptime(when.end_time.split(".")[0], "%Y-%m-%dT%H:%M:%S")
+			except ValueError: #All day events
+				continue
+			
+			if end_time > now:
+				#Check each reminder
+				if reminder.method == "alert":
+					reminderList = reminderList.append(start_time - datetime.timedelta(0, 60 * int(reminder.minutes)))
+					
+	reminderList.sort()
 
 if storage.has_key('RSSurl'):
 	RSSurl = storage['RSSurl']
@@ -97,6 +129,9 @@ os.system( [ 'clear','cls'][os.name == 'nt' ] )
 lastUpdate = datetime.datetime.utcnow()
 lastFbTitle = facebook()
 lastRSS = LatestRSSHeadline(RSSurl)
+UpdateCalendarEvents(calendarReminders)
+
+output_line(str(calendarReminders[0]))
 
 output_line('Vidiprinter online as of ' + datetime.datetime.strftime(datetime.datetime.now(), '%H:%M:%S'))
 
@@ -114,7 +149,7 @@ while True:
     
   RSSHeadline = LatestRSSHeadline(RSSurl)
   if RSSHeadline != lastRSS:
-	  output_line('RSS update: ')
+	  output_line('RSS update: ' + RSSHeadline)
 	  lastRSS = RSSHeadline
     
   if datetime.datetime.now().minute % 15  == 0:
