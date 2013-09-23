@@ -10,6 +10,7 @@ def printOptions():
 	print '4: Change Twitter consumer key'
 	print '5: Change Twitter consumer secret'
 	print '6: Reset Twitter login details'
+	print '7: Change RSS URL'
 	print '99: Exit'
 	print ''
 
@@ -34,6 +35,8 @@ while numInput != 99:
 	elif numInput == 6:
 		os.remove(os.path.expanduser('~/.my_app_credentials'))
 		print 'You will be prompted for new Twitter login details next time you launch the main Vidiprinter file'
+	elif numInput == 7:
+		storage['RSSurl'] = raw_input('Please enter your new RSS url: ')
 	elif numInput != 99:
 		print "Input not accepted. Please try again"
 

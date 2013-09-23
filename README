@@ -9,12 +9,14 @@ Currently, the project supports the following sources:
 -- New emails from a Gmail account
 -- Facebook notifications
 -- Clock (the time is printed every 15 minutes)
+-- One RSS feed of your choice
 
 Other planned sources include:
 -- Any IMAP email
 -- Facebook messages
 -- Public transport databases
 -- Google Calendar
+-- Multiple RSS feeds
 
 When the program is first launched, you will be prompted for a series of credentials. These can be changed at a later date by running VidiprinterSettings.py
 

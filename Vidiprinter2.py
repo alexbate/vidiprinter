@@ -47,6 +47,11 @@ def fetch_unread_email(mail):
 
 global FBurl
 
+if storage.has_key('RSSurl'):
+	RSSurl = storage['RSSurl']
+else:
+	paramNotFound('RSSurl') 
+
 if storage.has_key('FBurl'):
 	FBurl = storage['FBurl']
 else:
@@ -54,12 +59,16 @@ else:
 
 def facebook():
   global FBurl
-  global lastFbTitle
   rawNotifs=urllib2.urlopen(FBurl)
   parsedNotifs=feedparser.parse(rawNotifs)
   
   return parsedNotifs.entries[0].title
 
+def LatestRSSHeadline(url):
+  rawNotifs=urllib2.urlopen(url)
+  parsedNotifs=feedparser.parse(rawNotifs)
+  
+  return parsedNotifs.entries[0].title
 
 #Setup Twitter
 #Setup program OAuth keys
@@ -87,6 +96,8 @@ twitter = Twitter(
 os.system( [ 'clear','cls'][os.name == 'nt' ] )      
 lastUpdate = datetime.datetime.utcnow()
 lastFbTitle = facebook()
+lastRSS = LatestRSSHeadline(RSSurl)
+
 output_line('Vidiprinter online as of ' + datetime.datetime.strftime(datetime.datetime.now(), '%H:%M:%S'))
 
 while True:
@@ -100,6 +111,11 @@ while True:
   if FBnotif != lastFbTitle:
     output_line('New Facebook notification: ' + FBnotif)
     lastFbTitle = FBnotif
+    
+  RSSHeadline = LatestRSSHeadline(RSSurl)
+  if RSSHeadline != lastRSS:
+	  output_line('RSS update: ')
+	  lastRSS = RSSHeadline
     
   if datetime.datetime.now().minute % 15  == 0:
     output_line('The time is now ' + datetime.datetime.strftime(datetime.datetime.now(), '%H:%M'))
